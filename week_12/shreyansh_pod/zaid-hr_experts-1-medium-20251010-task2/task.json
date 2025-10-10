@@ -1,0 +1,132 @@
+{
+  "env": "hr_experts",
+  "model_provider": "fireworks",
+  "model": "qwen3-coder-480b-a35b-instruct",
+  "num_trials": 3,
+  "temperature": 1,
+  "interface_num": 1,
+  "task": {
+    "user_id": "7",
+    "instruction": "You are Renee Mosley (reneemosley@company.com), an HR Manager. Onboard Sarah Chen (sarah.chen@gmail.com) as a new employee and assign her to the open 'Marketing Specialist' position in the Research and Development department, reporting to the department manager. Ensure her employment record is created and she's ready to begin work immediately.",
+    "actions": [
+      {
+        "name": "check_approval",
+        "arguments": {
+          "action": "employee_onboarding",
+          "requester_email": "reneemosley@company.com"
+        }
+      },
+      {
+        "name": "discover_user_employee_entities",
+        "arguments": {
+          "entity_type": "users",
+          "filters": { "email": "sarah.chen@gmail.com" }
+        }
+      },
+      {
+        "name": "discover_job_entities",
+        "arguments": {
+          "entity_type": "job_positions",
+          "filters": {
+            "title": "Marketing Specialist",
+            "department_id": "9",
+            "status": "open"
+          }
+        }
+      },
+      {
+        "name": "discover_department_entities",
+        "arguments": {
+          "entity_type": "departments",
+          "filters": { "department_id": "9" }
+        }
+      },
+      {
+        "name": "manage_user",
+        "arguments": {
+          "action": "create",
+          "email": "sarah.chen@gmail.com",
+          "first_name": "Sarah",
+          "last_name": "Chen",
+          "phone_number": "+1234567890",
+          "role": "employee",
+          "status": "active"
+        }
+      },
+      {
+        "name": "manage_employee",
+        "arguments": {
+          "action": "create",
+          "employment_status": "active",
+          "hire_date": "2025-10-09",
+          "hourly_rate": 25.0
+        }
+      },
+      {
+        "name": "manage_audit_logs",
+        "arguments": {
+          "action": "create",
+          "operation": "create",
+          "reference_type": "employees",
+          "user_id": "7"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "check_approval",
+        "to": "manage_user",
+        "connection": { "output": "approval_valid", "input": "approval_status" }
+      },
+      {
+        "from": "check_approval",
+        "to": "manage_employee",
+        "connection": { "output": "approval_valid", "input": "approval_status" }
+      },
+      {
+        "from": "discover_user_employee_entities",
+        "to": "manage_user",
+        "connection": { "output": "count", "input": "existing_user_check" }
+      },
+      {
+        "from": "discover_user_employee_entities",
+        "to": "manage_employee",
+        "connection": { "output": "results[0].user_id", "input": "user_id" }
+      },
+      {
+        "from": "manage_user",
+        "to": "manage_employee",
+        "connection": { "output": "user_id", "input": "user_id" }
+      },
+      {
+        "from": "discover_job_entities",
+        "to": "manage_employee",
+        "connection": { "output": "results[0].position_id", "input": "position_id" }
+      },
+      {
+        "from": "discover_department_entities",
+        "to": "manage_employee",
+        "connection": { "output": "results[0].manager_id", "input": "manager_id" }
+      },
+      {
+        "from": "discover_job_entities",
+        "to": "manage_audit_logs",
+        "connection": { "output": "results[0].title", "input": "job_title" }
+      },
+      {
+        "from": "discover_department_entities",
+        "to": "manage_audit_logs",
+        "connection": { "output": "results[0].department_name", "input": "department_name" }
+      },
+      {
+        "from": "manage_employee",
+        "to": "manage_audit_logs",
+        "connection": { "output": "employee_id", "input": "reference_id" }
+      }
+    ],
+    "outputs": [
+      
+    ],
+    "num_edges": 10
+  }
+}
