@@ -6,15 +6,15 @@
   "temperature": 1,
   "interface_num": 1,
   "task": {
-    "user_id": "10",
-  "instruction": "You are a recruiter who wants Bryan Parker (bryan.parker@hotmail.com) to move forward in the hiring process for the open UX Designer role in the Marketing department. You need his application submitted with an application date of '2025-10-12', and would like to arrange a 60-minute technical interview with Julie Cardenas (juliecardenas@company.com) on 20 October 2025 at 10:00 AM.",
+    "user_id": "6",
+    "instruction": "You are Tina Hale (tina86@yahoo.com), an HR Manager. Complete the onboarding process for new employee Carol Patterson (carolpatterson@yahoo.com) by setting up her user account in the Human Resources department, enrolling her in the standard benefits package, and ensuring her first payroll is processed for the current pay period.",
     "actions": [
       {
         "name": "discover_user_employee_entities",
         "arguments": {
           "entity_type": "users",
           "filters": {
-            "email": "harold.gates@company.com"
+            "email": "tina86@yahoo.com"
           }
         },
         "output": {
@@ -22,16 +22,82 @@
           "entity_type": "users",
           "results": [
             {
-              "created_at": "2023-08-17T13:25:06",
-              "email": "harold.gates@company.com",
-              "first_name": "Harold",
-              "last_name": "Gates",
+              "created_at": "2024-08-21T15:10:45",
+              "email": "tina86@yahoo.com",
+              "first_name": "Tina",
+              "last_name": "Hale",
               "mfa_enabled": true,
-              "phone_number": "+12127236267",
-              "role": "recruiter",
+              "phone_number": "+19386024033",
+              "role": "hr_manager",
               "status": "active",
-              "updated_at": "2024-02-03T13:00:39",
-              "user_id": "10"
+              "updated_at": "2024-10-19T22:44:53",
+              "user_id": "6"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "discover_user_employee_entities",
+        "arguments": {
+          "entity_type": "users",
+          "filters": {
+            "email": "carolpatterson@yahoo.com"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "users",
+          "results": [
+            {
+              "created_at": "2021-07-23T00:49:57",
+              "email": "carolpatterson@yahoo.com",
+              "first_name": "Carol",
+              "last_name": "Patterson",
+              "mfa_enabled": true,
+              "phone_number": "+13472887894",
+              "role": "employee",
+              "status": "active",
+              "updated_at": "2022-05-16T08:44:37",
+              "user_id": "51"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "check_approval",
+        "arguments": {
+          "action": "employee_onboarding",
+          "requester_email": "tina86@yahoo.com"
+        },
+        "output": {
+          "approved": true,
+          "approval_id": "APP-2025-004",
+          "approver": "hr_manager",
+          "message": "Employee onboarding approved"
+        }
+      },
+      {
+        "name": "discover_department_entities",
+        "arguments": {
+          "entity_type": "departments",
+          "filters": {
+            "department_name": "Human Resources"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "departments",
+          "results": [
+            {
+              "budget": 3259629.27,
+              "created_at": "2023-01-30T13:00:01",
+              "department_id": "4",
+              "department_name": "Human Resources",
+              "manager_id": null,
+              "status": "active",
+              "updated_at": "2024-08-27T18:49:59"
             }
           ],
           "success": true
@@ -42,8 +108,7 @@
         "arguments": {
           "entity_type": "job_positions",
           "filters": {
-            "department_id": "2",
-            "title": "UX Designer",
+            "department_id": "4",
             "status": "open"
           }
         },
@@ -52,113 +117,158 @@
           "entity_type": "job_positions",
           "results": [
             {
-              "created_at": "2022-10-23T02:19:57",
-              "department_id": "2",
-              "employment_type": "part_time",
-              "hourly_rate_max": 55.0,
+              "created_at": "2024-09-01T10:00:00",
+              "department_id": "4",
+              "employment_type": "full_time",
+              "hourly_rate_max": 45.0,
               "hourly_rate_min": 35.0,
               "job_level": "mid",
-              "position_id": "9",
+              "position_id": "15",
               "status": "open",
-              "title": "UX Designer",
-              "updated_at": "2024-02-11T12:46:33"
+              "title": "HR Specialist",
+              "updated_at": "2024-09-15T14:30:00"
             }
           ],
           "success": true
         }
       },
       {
-        "name": "manage_job_application",
+        "name": "manage_user",
+        "arguments": {
+          "action": "update",
+          "user_id": "51",
+          "status": "active"
+        },
+        "output": {
+          "action": "update",
+          "message": "User status updated to active",
+          "success": true,
+          "user_data": {
+            "status": "active",
+            "updated_at": "2025-10-11T12:00:00",
+            "user_id": "51"
+          }
+        }
+      },
+      {
+        "name": "manage_employee",
         "arguments": {
           "action": "create",
-          "application_data": {
-            "candidate_id": "112",
-            "position_id": "9",
-            "recruiter_id": "10",
-            "application_date": "2025-10-12"
-          },
-          "application_id": "112"
+          "user_id": "51",
+          "position_id": "15",
+          "hire_date": "2025-10-11",
+          "employment_status": "active",
+          "hourly_rate": 40.0
         },
         "output": {
           "action": "create",
-          "application_data": {
-            "ai_screening_score": null,
-            "application_date": "2025-10-12",
-            "application_id": "480",
-            "candidate_id": "112",
-            "created_at": "2025-10-01T12:00:00",
-            "final_decision": null,
-            "position_id": "9",
-            "recruiter_id": "10",
-            "status": "submitted",
-            "updated_at": "2025-10-01T12:00:00"
+          "employee_data": {
+            "created_at": "2025-10-11T12:00:00",
+            "employee_id": "52",
+            "employment_status": "active",
+            "hire_date": "2025-10-11",
+            "hourly_rate": 40.0,
+            "position_id": "15",
+            "updated_at": "2025-10-11T12:00:00",
+            "user_id": "51"
           },
-          "application_id": "480",
-          "message": "Job application 480 created successfully",
+          "employee_id": "52",
+          "message": "Employee record created successfully",
           "success": true
         }
       },
       {
-        "name": "discover_user_employee_entities",
+        "name": "discover_benefits_entities",
         "arguments": {
-          "entity_type": "users",
+          "entity_type": "benefits_plans",
           "filters": {
-            "email": "juliecardenas@company.com"
+            "plan_type": "health_insurance",
+            "status": "active"
           }
         },
         "output": {
           "count": 1,
-          "entity_type": "users",
+          "entity_type": "benefits_plans",
           "results": [
             {
-              "created_at": "2021-03-23T01:33:00",
-              "email": "juliecardenas@company.com",
-              "first_name": "Julie",
-              "last_name": "Cardenas",
-              "mfa_enabled": false,
-              "phone_number": "+12053125380",
-              "role": "hiring_manager",
+              "created_at": "2022-12-12T01:45:00",
+              "effective_date": "2022-12-21",
+              "employee_cost": 250.0,
+              "employer_cost": 800.0,
+              "expiration_date": null,
+              "plan_id": "1",
+              "plan_name": "Blue Cross Blue Shield Health Plan",
+              "plan_type": "health_insurance",
+              "provider": "Blue Cross Blue Shield",
               "status": "active",
-              "updated_at": "2021-10-21T14:17:19",
-              "user_id": "29"
+              "updated_at": "2023-06-30T16:56:44"
             }
           ],
           "success": true
         }
       },
       {
-        "name": "manage_interview",
+        "name": "manage_employee_benefits",
         "arguments": {
           "action": "create",
-          "interview_data": {
-            "application_id": "480",
-            "interviewer_id": "29",
-            "interview_type": "technical",
-            "scheduled_date": "2025-10-20T10:00:00",
-            "duration_minutes": 60
-          },
-          "interview_id": "29"
+          "benefits_data": {
+            "employee_id": "52",
+            "plan_id": "1",
+            "enrollment_date": "2025-10-11",
+            "coverage_level": "employee_only",
+            "status": "active"
+          }
         },
         "output": {
           "action": "create",
-          "interview_data": {
-            "application_id": "480",
-            "communication_score": null,
-            "created_at": "2025-10-01T12:00:00",
-            "cultural_fit_score": null,
-            "duration_minutes": 60,
-            "interview_id": "348",
-            "interview_type": "technical",
-            "interviewer_id": "29",
-            "overall_rating": null,
-            "recommendation": null,
-            "scheduled_date": "2025-10-20T10:00:00",
-            "status": "scheduled",
-            "technical_score": null,
-            "updated_at": "2025-10-01T12:00:00"
+          "benefits_data": {
+            "beneficiary_name": "Carol Patterson",
+            "beneficiary_relationship": "self",
+            "coverage_level": "employee_only",
+            "created_at": "2025-10-11T12:00:00",
+            "employee_id": "52",
+            "enrollment_date": "2025-10-11",
+            "enrollment_id": "78",
+            "plan_id": "1",
+            "status": "active",
+            "updated_at": "2025-10-11T12:00:00"
           },
-          "interview_id": "348",
-          "message": "Interview 348 scheduled successfully",
+          "enrollment_id": "78",
+          "message": "Benefits enrollment created successfully",
+          "success": true
+        }
+      },
+      {
+        "name": "manage_payroll_record",
+        "arguments": {
+          "action": "create",
+          "payroll_data": {
+            "employee_id": "52",
+            "pay_period_start": "2025-10-01",
+            "pay_period_end": "2025-10-15",
+            "hourly_rate": 40.0,
+            "hours_worked": 80.0,
+            "payment_date": "2025-10-20",
+            "status": "pending"
+          }
+        },
+        "output": {
+          "action": "create",
+          "message": "Payroll record created successfully",
+          "payroll_data": {
+            "approved_by": null,
+            "created_at": "2025-10-11T12:00:00",
+            "employee_id": "52",
+            "hours_worked": 80.0,
+            "hourly_rate": 40.0,
+            "pay_period_end": "2025-10-15",
+            "pay_period_start": "2025-10-01",
+            "payment_date": "2025-10-20",
+            "payroll_id": "89",
+            "status": "pending",
+            "updated_at": "2025-10-11T12:00:00"
+          },
+          "payroll_id": "89",
           "success": true
         }
       },
@@ -166,140 +276,198 @@
         "name": "manage_audit_logs",
         "arguments": {
           "action": "create",
-          "field_name": "null",
-          "new_value": "null",
-          "old_value": "null",
           "operation": "create",
-          "reference_id": "348",
-          "reference_type": "interviews",
-          "user_id": "10"
+          "reference_type": "employees",
+          "reference_id": "52",
+          "user_id": "6"
         },
         "output": {
           "action": "create",
-          "field_name": "null",
-          "log_id": "2886",
-          "new_value": "null",
-          "old_value": "null",
-          "reference_id": "348",
-          "reference_type": "interviews",
-          "timestamp": "2025-10-01T12:00:00",
-          "user_id": "10"
+          "log_id": "1501",
+          "operation": "create",
+          "reference_id": "52",
+          "reference_type": "employees",
+          "timestamp": "2025-10-11T12:00:00",
+          "user_id": "6"
         }
       }
     ],
     "edges": [
-      { 
-        "from": "instruction", 
-        "to": "discover_user_employee_entities", 
-        "connection": { 
-          "output": "email", 
-          "input": "filters.email" 
+      {
+        "from": "instruction",
+        "to": "discover_user_employee_entities",
+        "connection": {
+          "output": "entity_type, email",
+          "input": "entity_type, filters.email"
         }
       },
-      { 
-        "from": "instruction", 
-        "to": "discover_job_entities", 
-        "connection": { 
-          "output": "title", 
-          "input": "filters.title" 
+      {
+        "from": "discover_user_employee_entities",
+        "to": "check_approval",
+        "connection": {
+          "output": "results[0].email",
+          "input": "requester_email"
         }
       },
-      { 
-        "from": "instruction", 
-        "to": "discover_job_entities", 
-        "connection": { 
-          "output": "status", 
-          "input": "filters.status" 
+      {
+        "from": "instruction",
+        "to": "check_approval",
+        "connection": {
+          "output": "action",
+          "input": "action"
         }
       },
-      { 
-        "from": "discover_job_entities", 
-        "to": "manage_job_application", 
-        "connection": { 
-          "output": "output.results[0].position_id", 
-          "input": "application_data.position_id" 
+      {
+        "from": "instruction",
+        "to": "discover_department_entities",
+        "connection": {
+          "output": "entity_type, department_name",
+          "input": "entity_type, filters.department_name"
         }
       },
-      { 
-        "from": "discover_user_employee_entities", 
-        "to": "manage_job_application", 
-        "connection": { 
-          "output": "output.results[0].user_id", 
-          "input": "application_data.recruiter_id" 
+      {
+        "from": "discover_department_entities",
+        "to": "discover_job_entities",
+        "connection": {
+          "output": "results[0].department_id",
+          "input": "filters.department_id"
         }
       },
-      { 
-        "from": "instruction", 
-        "to": "manage_job_application", 
-        "connection": { 
-          "output": "application_date", 
-          "input": "application_data.application_date" 
+      {
+        "from": "instruction",
+        "to": "discover_job_entities",
+        "connection": {
+          "output": "entity_type, status",
+          "input": "entity_type, filters.status"
         }
       },
-      { 
-        "from": "manage_job_application", 
-        "to": "discover_user_employee_entities", 
-        "connection": { 
-          "output": "output.application_id", 
-          "input": "filters.application_id" 
+      {
+        "from": "discover_user_employee_entities",
+        "to": "manage_user",
+        "connection": {
+          "output": "results[0].user_id",
+          "input": "user_id"
         }
       },
-      { 
-        "from": "instruction", 
-        "to": "discover_user_employee_entities", 
-        "connection": { 
-          "output": "email", 
-          "input": "filters.email" 
+      {
+        "from": "instruction",
+        "to": "manage_user",
+        "connection": {
+          "output": "action, status",
+          "input": "action, status"
         }
       },
-      { 
-        "from": "discover_user_employee_entities", 
-        "to": "manage_interview", 
-        "connection": { 
-          "output": "output.results[0].user_id", 
-          "input": "interview_data.interviewer_id" 
+      {
+        "from": "manage_user",
+        "to": "manage_employee",
+        "connection": {
+          "output": "user_data.user_id",
+          "input": "user_id"
         }
       },
-      { 
-        "from": "manage_job_application", 
-        "to": "manage_interview", 
-        "connection": { 
-          "output": "output.application_id", 
-          "input": "interview_data.application_id" 
+      {
+        "from": "discover_job_entities",
+        "to": "manage_employee",
+        "connection": {
+          "output": "results[0].position_id",
+          "input": "position_id"
         }
       },
-      { 
-        "from": "instruction", 
-        "to": "manage_interview", 
-        "connection": { 
-          "output": "interview_type", 
-          "input": "interview_data.interview_type" 
+      {
+        "from": "instruction",
+        "to": "manage_employee",
+        "connection": {
+          "output": "action, hire_date, employment_status, hourly_rate",
+          "input": "action, hire_date, employment_status, hourly_rate"
         }
       },
-      { 
-        "from": "instruction", 
-        "to": "manage_interview", 
-        "connection": { 
-          "output": "scheduled_date", 
-          "input": "interview_data.scheduled_date" 
+      {
+        "from": "instruction",
+        "to": "discover_benefits_entities",
+        "connection": {
+          "output": "entity_type, plan_type, status",
+          "input": "entity_type, filters.plan_type, filters.status"
         }
       },
-      { 
-        "from": "instruction", 
-        "to": "manage_interview", 
-        "connection": { 
-          "output": "duration_minutes", 
-          "input": "interview_data.duration_minutes" 
+      {
+        "from": "manage_employee",
+        "to": "manage_employee_benefits",
+        "connection": {
+          "output": "employee_id",
+          "input": "benefits_data.employee_id"
         }
       },
-      { 
-        "from": "manage_interview", 
-        "to": "manage_audit_logs", 
-        "connection": { 
-          "output": "output.interview_id", 
-          "input": "reference_id" } }
+      {
+        "from": "discover_benefits_entities",
+        "to": "manage_employee_benefits",
+        "connection": {
+          "output": "results[0].plan_id",
+          "input": "benefits_data.plan_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manage_employee_benefits",
+        "connection": {
+          "output": "action, enrollment_date, coverage_level, status",
+          "input": "action, benefits_data.enrollment_date, benefits_data.coverage_level, benefits_data.status"
+        }
+      },
+      {
+        "from": "manage_employee",
+        "to": "manage_payroll_record",
+        "connection": {
+          "output": "employee_id",
+          "input": "payroll_data.employee_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manage_payroll_record",
+        "connection": {
+          "output": "action, pay_period_start, pay_period_end, hours_worked, payment_date, status",
+          "input": "action, payroll_data.pay_period_start, payroll_data.pay_period_end, payroll_data.hours_worked, payroll_data.payment_date, payroll_data.status"
+        }
+      },
+      {
+        "from": "manage_employee",
+        "to": "manage_audit_logs",
+        "connection": {
+          "output": "employee_id",
+          "input": "reference_id"
+        }
+      },
+      {
+        "from": "discover_user_employee_entities",
+        "to": "manage_audit_logs",
+        "connection": {
+          "output": "results[0].user_id",
+          "input": "user_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manage_audit_logs",
+        "connection": {
+          "output": "action, operation, reference_type",
+          "input": "action, operation, reference_type"
+        }
+      },
+      {
+        "from": "check_approval",
+        "to": "discover_department_entities",
+        "connection": {
+          "output": "approved",
+          "input": "approved"
+        }
+      }
     ],
-    "outputs": [ ],
-    "num_edges": 13
+    "outputs": [
+      "52",
+      "78",
+      "89"
+    ],
+    "num_edges": 21
   }
-}  
+}
+
