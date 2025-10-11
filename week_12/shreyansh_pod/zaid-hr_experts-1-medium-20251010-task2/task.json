@@ -1,132 +1,254 @@
 {
-  "env": "hr_experts",
-  "model_provider": "fireworks",
-  "model": "qwen3-coder-480b-a35b-instruct",
-  "num_trials": 3,
-  "temperature": 1,
-  "interface_num": 1,
-  "task": {
-    "user_id": "7",
-    "instruction": "You are Renee Mosley (reneemosley@company.com), an HR Manager. Onboard Sarah Chen (sarah.chen@gmail.com) as a new employee and assign her to the open 'Marketing Specialist' position in the Research and Development department, reporting to the department manager. Ensure her employment record is created and she's ready to begin work immediately.",
-    "actions": [
-      {
-        "name": "check_approval",
-        "arguments": {
-          "action": "employee_onboarding",
-          "requester_email": "reneemosley@company.com"
-        }
-      },
-      {
-        "name": "discover_user_employee_entities",
-        "arguments": {
-          "entity_type": "users",
-          "filters": { "email": "sarah.chen@gmail.com" }
-        }
-      },
-      {
-        "name": "discover_job_entities",
-        "arguments": {
-          "entity_type": "job_positions",
-          "filters": {
-            "title": "Marketing Specialist",
-            "department_id": "9",
-            "status": "open"
-          }
-        }
-      },
-      {
-        "name": "discover_department_entities",
-        "arguments": {
-          "entity_type": "departments",
-          "filters": { "department_id": "9" }
-        }
-      },
-      {
-        "name": "manage_user",
-        "arguments": {
-          "action": "create",
-          "email": "sarah.chen@gmail.com",
-          "first_name": "Sarah",
-          "last_name": "Chen",
-          "phone_number": "+1234567890",
-          "role": "employee",
-          "status": "active"
-        }
-      },
-      {
-        "name": "manage_employee",
-        "arguments": {
-          "action": "create",
-          "employment_status": "active",
-          "hire_date": "2025-10-09",
-          "hourly_rate": 25.0
-        }
-      },
-      {
-        "name": "manage_audit_logs",
-        "arguments": {
-          "action": "create",
-          "operation": "create",
-          "reference_type": "employees",
-          "user_id": "7"
-        }
-      }
-    ],
-    "edges": [
-      {
-        "from": "check_approval",
-        "to": "manage_user",
-        "connection": { "output": "approval_valid", "input": "approval_status" }
-      },
-      {
-        "from": "check_approval",
-        "to": "manage_employee",
-        "connection": { "output": "approval_valid", "input": "approval_status" }
-      },
-      {
-        "from": "discover_user_employee_entities",
-        "to": "manage_user",
-        "connection": { "output": "count", "input": "existing_user_check" }
-      },
-      {
-        "from": "discover_user_employee_entities",
-        "to": "manage_employee",
-        "connection": { "output": "results[0].user_id", "input": "user_id" }
-      },
-      {
-        "from": "manage_user",
-        "to": "manage_employee",
-        "connection": { "output": "user_id", "input": "user_id" }
-      },
-      {
-        "from": "discover_job_entities",
-        "to": "manage_employee",
-        "connection": { "output": "results[0].position_id", "input": "position_id" }
-      },
-      {
-        "from": "discover_department_entities",
-        "to": "manage_employee",
-        "connection": { "output": "results[0].manager_id", "input": "manager_id" }
-      },
-      {
-        "from": "discover_job_entities",
-        "to": "manage_audit_logs",
-        "connection": { "output": "results[0].title", "input": "job_title" }
-      },
-      {
-        "from": "discover_department_entities",
-        "to": "manage_audit_logs",
-        "connection": { "output": "results[0].department_name", "input": "department_name" }
-      },
-      {
-        "from": "manage_employee",
-        "to": "manage_audit_logs",
-        "connection": { "output": "employee_id", "input": "reference_id" }
-      }
-    ],
-    "outputs": [
-      
-    ],
-    "num_edges": 10
-  }
+	"env": "hr_experts",
+	"model_provider": "fireworks",
+	"model": "qwen3-coder-480b-a35b-instruct",
+	"num_trials": 3,
+	"temperature": 1,
+	"interface_num": 1,
+	"task": {
+		"user_id": "5",
+		"instruction": "You are Sarah Mitchell (sarah.mitchell@company.com) and want to advance Erica Dominguez (ericadominguez@company.com) for the open Controller position in the Engineering department. Submit her application with today's date (2025-10-11) and schedule a 90-minute panel interview with Christopher Roach (christopher.roach@yahoo.com) for October 25, 2025 at 2:00 PM to evaluate her financial expertise and leadership capabilities.",
+		"actions": [
+			{
+				"name": "discover_user_employee_entities",
+				"arguments": {
+					"email": "sarah.mitchell@company.com"
+				},
+				"output": [
+					{
+						"user_id": "5",
+						"first_name": "Sarah",
+						"last_name": "Mitchell",
+						"email": "sarah.mitchell@company.com",
+						"phone_number": "+15551234567",
+						"role": "hr_manager",
+						"status": "active",
+						"mfa_enabled": true,
+						"created_at": "2023-01-15T09:30:00",
+						"updated_at": "2024-08-20T14:45:00"
+					}
+				]
+			},
+			{
+				"name": "discover_department_entities",
+				"arguments": {
+					"department_name": "Engineering"
+				},
+				"output": [
+					{
+						"department_id": "1",
+						"department_name": "Engineering",
+						"manager_id": null,
+						"budget": 4771808.47,
+						"status": "active",
+						"created_at": "2022-10-01T03:53:36",
+						"updated_at": "2022-12-03T19:12:31"
+					}
+				]
+			},
+			{
+				"name": "discover_job_entities",
+				"arguments": {
+					"department_id": "1",
+					"title": "Controller",
+					"status": "open"
+				},
+				"output": [
+					{
+						"position_id": "42",
+						"title": "Controller",
+						"department_id": "1",
+						"job_level": "senior",
+						"employment_type": "full_time",
+						"hourly_rate_min": 80.0,
+						"hourly_rate_max": 110.0,
+						"status": "open",
+						"created_at": "2025-09-20T09:00:00",
+						"updated_at": "2025-10-01T11:15:00"
+					}
+				]
+			},
+			{
+				"name": "discover_user_employee_entities",
+				"arguments": {
+					"email": "ericadominguez@company.com"
+				},
+				"output": [
+					{
+						"candidate_id": "87",
+						"first_name": "Erica",
+						"last_name": "Dominguez",
+						"email": "ericadominguez@company.com",
+						"phone_number": "+15551230000",
+						"status": "interviewing",
+						"source": "referral",
+						"address": "22 Market St, Austin, TX 73301",
+						"created_at": "2024-11-05T10:25:00",
+						"updated_at": "2025-09-29T16:40:00"
+					}
+				]
+			},
+			{
+				"name": "manage_job_application",
+				"arguments": {
+					"action": "create",
+					"candidate_id": "87",
+					"position_id": "42",
+					"application_date": "2025-10-11",
+					"recruiter_id": "5",
+					"status": "submitted"
+				},
+				"output": {
+					"application_id": "312",
+					"success": true,
+					"message": "Job application created successfully"
+				}
+			},
+			{
+				"name": "discover_user_employee_entities",
+				"arguments": {
+					"email": "christopher.roach@yahoo.com"
+				},
+				"output": [
+					{
+						"user_id": "27",
+						"first_name": "Christopher",
+						"last_name": "Roach",
+						"email": "christopher.roach@yahoo.com",
+						"phone_number": "+15557770000",
+						"role": "hiring_manager",
+						"status": "active",
+						"mfa_enabled": false,
+						"created_at": "2023-03-12T12:05:00",
+						"updated_at": "2025-08-10T09:30:00"
+					}
+				]
+			},
+			{
+				"name": "manage_interview",
+				"arguments": {
+					"action": "create",
+					"application_id": "312",
+					"interviewer_id": "27",
+					"interview_type": "panel",
+					"scheduled_date": "2025-10-25T14:00:00",
+					"duration_minutes": 90,
+					"status": "scheduled"
+				},
+				"output": {
+					"interview_id": "91",
+					"success": true,
+					"message": "Interview scheduled successfully"
+				}
+			}
+		],
+		"edges": [
+			{
+				"from": "instruction",
+				"to": "discover_user_employee_entities",
+				"connection": {
+					"output": "email",
+					"input": "email"
+				}
+			},
+			{
+				"from": "instruction",
+				"to": "discover_department_entities",
+				"connection": {
+					"output": "department_name",
+					"input": "department_name"
+				}
+			},
+			{
+				"from": "discover_department_entities",
+				"to": "discover_job_entities",
+				"connection": {
+					"output": "output[0].department_id",
+					"input": "department_id"
+				}
+			},
+			{
+				"from": "instruction",
+				"to": "discover_job_entities",
+				"connection": {
+					"output": "title, status",
+					"input": "title, status"
+				}
+			},
+			{
+				"from": "instruction",
+				"to": "discover_user_employee_entities",
+				"connection": {
+					"output": "email",
+					"input": "email"
+				}
+			},
+			{
+				"from": "discover_user_employee_entities",
+				"to": "manage_job_application",
+				"connection": {
+					"output": "output[0].candidate_id",
+					"input": "candidate_id"
+				}
+			},
+			{
+				"from": "discover_job_entities",
+				"to": "manage_job_application",
+				"connection": {
+					"output": "output[0].position_id",
+					"input": "position_id"
+				}
+			},
+			{
+				"from": "discover_user_employee_entities",
+				"to": "manage_job_application",
+				"connection": {
+					"output": "output[0].user_id",
+					"input": "recruiter_id"
+				}
+			},
+			{
+				"from": "instruction",
+				"to": "manage_job_application",
+				"connection": {
+					"output": "action, application_date, status",
+					"input": "action, application_date, status"
+				}
+			},
+			{
+				"from": "manage_job_application",
+				"to": "manage_interview",
+				"connection": {
+					"output": "application_id",
+					"input": "application_id"
+				}
+			},
+			{
+				"from": "instruction",
+				"to": "discover_user_employee_entities",
+				"connection": {
+					"output": "email",
+					"input": "email"
+				}
+			},
+			{
+				"from": "discover_user_employee_entities",
+				"to": "manage_interview",
+				"connection": {
+					"output": "output[0].user_id",
+					"input": "interviewer_id"
+				}
+			},
+			{
+				"from": "instruction",
+				"to": "manage_interview",
+				"connection": {
+					"output": "action, interview_type, scheduled_date, duration_minutes, status",
+					"input": "action, interview_type, scheduled_date, duration_minutes, status"
+				}
+			}
+		],
+		"outputs": ["42", "312", "91"],
+		"num_edges": 13
+	}
 }
