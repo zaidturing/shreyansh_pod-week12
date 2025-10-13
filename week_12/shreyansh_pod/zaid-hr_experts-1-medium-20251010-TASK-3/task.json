@@ -259,6 +259,7 @@
           "output": "action, field_name, operation, reference_type", 
           "input": "action, field_name, operation, reference_type" } }
     ],
+    "outputs": [ ],
     "num_edges": 13
   }
 }
