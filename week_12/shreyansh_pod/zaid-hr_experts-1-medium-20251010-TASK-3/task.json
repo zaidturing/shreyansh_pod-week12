@@ -68,7 +68,8 @@
       "arguments": {
         "entity_type": "job_positions",
         "filters": {
-          "title": "Design Director"
+          "title": "Design Director",
+          "department_id": "1"
         }
       },
       "output": {
@@ -189,11 +190,11 @@
         } 
       },
       { 
-        "from": "discover_user_employee_entities", 
+        "from": "instruction", 
         "to": "check_approval", 
         "connection": { 
-          "output": "results[0].email", 
-          "input": "requester_email" 
+          "output": "requester_email, action", 
+          "input": "requester_email, action" 
         } 
       },
       { 
@@ -259,7 +260,7 @@
           "output": "action, field_name, operation, reference_type", 
           "input": "action, field_name, operation, reference_type" } }
     ],
-    "outputs": [ ],
+    "output" : [ ],
     "num_edges": 13
   }
 }
