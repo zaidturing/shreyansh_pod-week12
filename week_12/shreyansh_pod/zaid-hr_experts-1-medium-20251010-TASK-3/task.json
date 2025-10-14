@@ -197,14 +197,7 @@
           "input": "requester_email, action" 
         } 
       },
-      { 
-        "from": "instruction", 
-        "to": "check_approval", 
-        "connection": { 
-          "output": "action", 
-          "input": "action" 
-        } 
-      },
+    
       { 
         "from": "discover_job_entities", 
         "to": "manage_job_position", 
@@ -261,7 +254,7 @@
           "input": "action, field_name, operation, reference_type" } }
     ],
     "output" : [ ],
-    "num_edges": 13
+    "num_edges": 12
   }
 }
 
