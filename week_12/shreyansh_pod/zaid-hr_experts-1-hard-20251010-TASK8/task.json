@@ -1,0 +1,342 @@
+{
+  "env": "hr_experts",
+  "model_provider": "fireworks",
+  "model": "qwen3-coder-480b-a35b-instruct",
+  "num_trials": 3,
+  "temperature": 1,
+  "interface_num": 1,
+  "task": {
+    "user_id": "1",
+    "instruction": "You are Johnny Jones (johnny.jones@protonmail.com), an HR Director. Renee Mosley (reneemosley@company.com) has been hired as a Senior Business Analyst in the Engineering department with a hire date of 2025-10-20 and you need to onboard her as an employee.",
+    "actions": [
+      {
+        "name": "discover_user_employee_entities",
+        "arguments": {
+          "entity_type": "users",
+          "filters": {
+            "email": "johnny.jones@protonmail.com",
+            "role": "hr_director"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "users",
+          "results": [
+            {
+              "user_id": "1",
+              "first_name": "Johnny",
+              "last_name": "Jones",
+              "email": "johnny.jones@protonmail.com",
+              "phone_number": "+13474618830",
+              "role": "hr_director",
+              "status": "active",
+              "mfa_enabled": false,
+              "created_at": "2021-01-23T23:36:28",
+              "updated_at": "2022-03-03T16:57:44"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "discover_user_employee_entities",
+        "arguments": {
+          "entity_type": "users",
+          "filters": {
+            "email": "reneemosley@company.com"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "users",
+          "results": [
+            {
+              "user_id": "7",
+              "first_name": "Renee",
+              "last_name": "Mosley",
+              "email": "reneemosley@company.com",
+              "phone_number": "+19386974032",
+              "role": "hr_manager",
+              "status": "active",
+              "mfa_enabled": false,
+              "created_at": "2024-01-05T11:36:06",
+              "updated_at": "2025-01-10T07:03:34"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "discover_department_entities",
+        "arguments": {
+          "entity_type": "departments",
+          "filters": {
+            "department_name": "Engineering"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "departments",
+          "results": [
+            {
+              "department_id": "1",
+              "department_name": "Engineering",
+              "manager_id": null,
+              "budget": 4771808.47,
+              "status": "active",
+              "created_at": "2022-10-01T03:53:36",
+              "updated_at": "2022-12-03T19:12:31"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "discover_job_entities",
+        "arguments": {
+          "entity_type": "job_positions",
+          "filters": {
+            "title": "Senior Business Analyst",
+            "department_id": "1"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "job_positions",
+          "results": [
+            {
+              "position_id": "2",
+              "title": "Senior Business Analyst",
+              "department_id": "1",
+              "job_level": "senior",
+              "employment_type": "temporary",
+              "hourly_rate_min": 55.0,
+              "hourly_rate_max": 85.0,
+              "status": "closed",
+              "created_at": "2022-12-14T17:22:12",
+              "updated_at": "2025-01-22T12:34:19"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "check_approval",
+        "arguments": {
+          "action": "employee_onboarding",
+          "requester_email": "johnny.jones@protonmail.com"
+        },
+        "output": {
+          "approval_valid": true,
+          "approved_by": [
+            "compliance_officer",
+            "hr_manager"
+          ],
+          "message": "All required approvals received from: compliance_officer, hr_manager"
+        }
+      },
+      {
+        "name": "manage_employee",
+        "arguments": {
+          "action": "create",
+          "hire_date": "2025-10-20",
+          "position_id": "2",
+          "user_id": "7"
+        },
+        "output": {
+          "employee_data": {
+            "address": null,
+            "created_at": "2025-10-01T12:00:00",
+            "date_of_birth": null,
+            "employee_id": "101",
+            "employment_status": "active",
+            "hire_date": "2025-10-20",
+            "hourly_rate": null,
+            "manager_id": null,
+            "position_id": "2",
+            "updated_at": "2025-10-01T12:00:00",
+            "user_id": "7"
+          },
+          "employee_id": "101",
+          "message": "Employee record created successfully for user ID '7'",
+          "success": true
+        }
+      },
+      {
+        "name": "manage_user",
+        "arguments": {
+          "action": "update",
+          "status": "active",
+          "user_id": "7"
+        },
+        "output": {
+          "message": "User 7 updated successfully",
+          "success": true,
+          "updated_fields": [
+            "status"
+          ],
+          "user_data": {
+            "created_at": "2024-01-05T11:36:06",
+            "email": "reneemosley@company.com",
+            "first_name": "Renee",
+            "last_name": "Mosley",
+            "mfa_enabled": false,
+            "phone_number": "+19386974032",
+            "role": "hr_manager",
+            "status": "active",
+            "updated_at": "2025-10-01T12:00:00",
+            "user_id": "7"
+          }
+        }
+      },
+      {
+        "name": "manage_audit_logs",
+        "arguments": {
+          "action": "create",
+          "field_name": "employee_onboarding",
+          "new_value": "101",
+          "old_value": null,
+          "operation": "create",
+          "reference_id": "101",
+          "reference_type": "employees",
+          "user_id": "1"
+        },
+        "output": {
+          "action": "create",
+          "field_name": "employee_onboarding",
+          "log_id": "2885",
+          "new_value": "101",
+          "old_value": null,
+          "reference_id": "101",
+          "reference_type": "employees",
+          "timestamp": "2025-10-01T12:00:00",
+          "user_id": "1"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "instruction",
+        "to": "discover_user_employee_entities",
+        "connection": {
+          "output": "entity_type, email, role",
+          "input": "entity_type, filters.email, filters.role"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "discover_user_employee_entities",
+        "connection": {
+          "output": "entity_type, email",
+          "input": "entity_type, filters.email"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "discover_department_entities",
+        "connection": {
+          "output": "entity_type, department_name",
+          "input": "entity_type, filters.department_name"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "discover_job_entities",
+        "connection": {
+          "output": "entity_type, position_title",
+          "input": "entity_type, filters.title"
+        }
+      },
+      {
+        "from": "discover_department_entities",
+        "to": "discover_job_entities",
+        "connection": {
+          "output": "results[0].department_id",
+          "input": "filters.department_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "check_approval",
+        "connection": {
+          "output": "requester_email, action",
+          "input": "requester_email, action"
+        }
+      },
+      {
+        "from": "discover_user_employee_entities",
+        "to": "manage_employee",
+        "connection": {
+          "output": "results[0].user_id",
+          "input": "user_id"
+        }
+      },
+      {
+        "from": "discover_job_entities",
+        "to": "manage_employee",
+        "connection": {
+          "output": "results[0].position_id",
+          "input": "position_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manage_employee",
+        "connection": {
+          "output": "hire_date",
+          "input": "hire_date"
+        }
+      },
+      {
+        "from": "check_approval",
+        "to": "manage_employee",
+        "connection": {
+          "output": "approval_valid",
+          "input": "approval_valid"
+        }
+      },
+      {
+        "from": "discover_user_employee_entities",
+        "to": "manage_user",
+        "connection": {
+          "output": "results[0].user_id",
+          "input": "user_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manage_user",
+        "connection": {
+          "output": "action, status",
+          "input": "action, status"
+        }
+      },
+      {
+        "from": "manage_employee",
+        "to": "manage_audit_logs",
+        "connection": {
+          "output": "employee_data.employee_id, employee_data.employee_id",
+          "input": "new_value, reference_id"
+        }
+      },
+      {
+        "from": "discover_user_employee_entities",
+        "to": "manage_audit_logs",
+        "connection": {
+          "output": "results[0].user_id",
+          "input": "user_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manage_audit_logs",
+        "connection": {
+          "output": "action, field_name, operation, reference_type, old_value",
+          "input": "action, field_name, operation, reference_type, old_value"
+        }
+      }
+    ],
+    "output": [],
+    "num_edges": 15
+  }
+}
