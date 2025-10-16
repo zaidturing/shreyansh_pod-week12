@@ -157,7 +157,8 @@
         },
         "output": {
           "approval_valid": true,
-          "message": "Approved by authorized role: hr_director"
+          "approved_by": "hiring_manager",
+          "message": "Approved by authorized role: hiring_manager"
         }
       },
       {
@@ -173,8 +174,7 @@
           "success": true,
           "action": "update",
           "application_id": "285",
-          "message": "Application 285 updated successfully",
-          "updated_fields": ["status"],
+          "message": "Job application 285 updated successfully",
           "application_data": {
             "application_id": "285",
             "candidate_id": "151",
@@ -185,7 +185,7 @@
             "ai_screening_score": null,
             "final_decision": null,
             "created_at": "2025-02-16T16:26:49",
-            "updated_at": "2025-10-14T12:00:00"
+            "updated_at": "2025-10-01T12:00:00"
           }
         }
       },
@@ -205,10 +205,10 @@
         "output": {
           "success": true,
           "action": "create",
-          "interview_id": "789",
-          "message": "Interview 789 scheduled successfully",
+          "interview_id": "348",
+          "message": "Interview 348 scheduled successfully",
           "interview_data": {
-            "interview_id": "789",
+            "interview_id": "348",
             "application_id": "285",
             "interviewer_id": "25",
             "interview_type": "behavioral",
@@ -220,8 +220,8 @@
             "communication_score": null,
             "cultural_fit_score": null,
             "recommendation": null,
-            "created_at": "2025-10-14T12:00:00",
-            "updated_at": "2025-10-14T12:00:00"
+            "created_at": "2025-10-01T12:00:00",
+            "updated_at": "2025-10-01T12:00:00"
           }
         }
       },
@@ -238,7 +238,7 @@
           "user_id": "1"
         },
         "output": {
-          "log_id": "3002",
+          "log_id": "2885",
           "user_id": "1",
           "action": "update",
           "reference_type": "job_applications",
@@ -246,7 +246,31 @@
           "field_name": "status",
           "old_value": "submitted",
           "new_value": "under_review",
-          "timestamp": "2025-10-14T12:00:00"
+          "timestamp": "2025-10-01T12:00:00"
+        }
+      },
+      {
+        "name": "manage_audit_logs",
+        "arguments": {
+          "operation": "create",
+          "action": "create",
+          "field_name": "interview_id",
+          "old_value": "null",
+          "new_value": "348",
+          "reference_type": "interviews",
+          "reference_id": "348",
+          "user_id": "1"
+        },
+        "output": {
+          "log_id": "2886",
+          "user_id": "1",
+          "action": "create",
+          "reference_type": "interviews",
+          "reference_id": "348",
+          "field_name": "interview_id",
+          "old_value": "null",
+          "new_value": "348",
+          "timestamp": "2025-10-01T12:00:00"
         }
       }
     ],
@@ -378,9 +402,33 @@
           "output": "operation, action, field_name, reference_type",
           "input": "operation, action, field_name, reference_type"
         }
+      },
+      {
+        "from": "manage_interview",
+        "to": "manage_audit_logs",
+        "connection": {
+          "output": "interview_data.interview_id, interview_data.interview_id",
+          "input": "new_value, reference_id"
+        }
+      },
+      {
+        "from": "discover_user_employee_entities",
+        "to": "manage_audit_logs",
+        "connection": {
+          "output": "results[0].user_id",
+          "input": "user_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manage_audit_logs",
+        "connection": {
+          "output": "operation, action, field_name, reference_type",
+          "input": "operation, action, field_name, reference_type"
+        }
       }
     ],
     "output": [],
-    "num_edges": 16
+    "num_edges": 19
   }
 }
